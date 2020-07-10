@@ -1,20 +1,22 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import Contact from "./Contact";
+import axios from 'axios';
 
 
 function ContactList() {
-    const [contacts,setContacts]= useState([
-        {firstname: "Jb", lastname: "Lavisse"},
-        {firstname: "Riri", lastname: "Duck"},
-        {firstname: "Fifi", lastname: "Duck"},
-        {firstname: "Loulou", lastname: "Fuck"},
-    ])
+    useEffect(() => {
+        axios.get("https://jsonplaceholder.typicode.com/users")
+        .then(res => {
+            setContacts(res.data);
+        })
+    }, [])
+
+    const [contacts,setContacts]= useState([])
 
     return(
         <ul>
             {contacts.map(contact => 
-                <li><Contact firstname={contact.firstname} 
-                lastname={contact.lastname} /></li>)}
+                <li key={contact.id}><Contact name={contact.name} /></li>)}
         </ul>
     )
 }
